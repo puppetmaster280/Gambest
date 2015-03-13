@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{5E44FDAF-80B6-4418-9D71-494B0EBF49BC}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <StartupObject>Gambest.Module1</StartupObject>
+    <StartupObject>Gambest.Main</StartupObject>
     <RootNamespace>Gambest</RootNamespace>
     <AssemblyName>Gambest</AssemblyName>
     <FileAlignment>512</FileAlignment>
@@ -90,7 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands.vb" />
-    <Compile Include="Module1.vb" />
+    <Compile Include="Main.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

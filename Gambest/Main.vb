@@ -2,7 +2,7 @@
 Imports Gambest.Objects
 Imports System.Xml
 Imports FFACETools.FFACETools
-Module Module1
+Module Main
     Private Delay As Integer = 0
     Sub Main()
         Dim processes As Process() = Process.GetProcessesByName("pol")
