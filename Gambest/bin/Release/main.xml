@@ -5,7 +5,7 @@
 	<PARTYCOUNT>6</PARTYCOUNT>
 </SETTINGS>
 
-<PLAYER name="Urat" leader="1">
+<PLAYER name="Derp" leader="1">
 	<GAMBIT>
 		<TRIGGER gate="AND">
 			<PARTY type="HPP" gate="less" arg="50" />
