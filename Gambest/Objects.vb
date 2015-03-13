@@ -138,7 +138,7 @@ Module Objects
         Public Leader As Boolean = True
         Public gambits As New List(Of Gambit)
         Public Name As String = ""
-        Public INSTANCE As FFACETools.FFACETools.FFACE = Nothing
+        Public INSTANCE As FFACETools.FFACE = Nothing
 
         Public Sub New(ByVal _Name As String, ByVal _Leader As Boolean)
             Leader = _Leader

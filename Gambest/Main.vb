@@ -1,7 +1,7 @@
 ﻿Imports Gambest.Commands
 Imports Gambest.Objects
 Imports System.Xml
-Imports FFACETools.FFACETools
+Imports FFACETools
 Module Main
     Private Delay As Integer = 0
     Sub Main()

@@ -1,6 +1,6 @@
 ﻿Imports Gambest.Objects
 Imports System.Xml
-Imports FFACETools.FFACETools
+Imports FFACETools
 Module Commands
     Public Sub OutError(ByVal Line As Integer, ByVal Message As String, ByVal Kill As Boolean)
         Dim Outmessage As String = "Error at line #" + Line.ToString() + vbNewLine _
@@ -20,9 +20,6 @@ Module Commands
     Public Function Parse(ByVal filepath As String, ByRef delay As Integer) As List(Of character)
 
         Dim outlist As New List(Of character)
-
-
-
 
         Dim reader As New XmlDocument()
         reader.Load(filepath)
