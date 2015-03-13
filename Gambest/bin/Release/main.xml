@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ROOT>
+<SETTINGS>
+	<DELAY>200</DELAY>
+	<PARTYCOUNT>6</PARTYCOUNT>
+</SETTINGS>
+
+<PLAYER name="Urat" leader="1">
+	<GAMBIT>
+		<TRIGGER gate="AND">
+			<PARTY type="HPP" gate="less" arg="50" />
+			<SELF type="MPP" gate="greater" arg="25" />
+		</TRIGGER>
+		<REACTION type="TARGET">
+			<SPELL>Cure II</SPELL>
+		</REACTION>
+	</GAMBIT>
+
+	<GAMBIT>
+		<TRIGGER gate="AND">
+			<PARTY type="HPP" gate="less" arg="25" />
+			<ME type="MPP" gate="greater" arg="25" />
+		</TRIGGER>
+		<REACTION>
+			<SPELL>Cure III</SPELL>
+		</REACTION>
+	</GAMBIT>
+</PLAYER>
+
+
+<PLAYER name="Herp" leader="0">
+	<GAMBIT>
+		<TRIGGER gate="AND">
+			<PARTY type="HPP" gate="less" arg="50" />
+			<ME type="MPP" gate="greater" arg="25" />
+		</TRIGGER>
+		<REACTION>
+			<SPELL>Cure II</SPELL>
+		</REACTION>
+	</GAMBIT>
+
+	<GAMBIT>
+		<TRIGGER gate="AND">
+			<PARTY type="HPP" gate="less" arg="25" />
+			<ME type="MPP" gate="greater" arg="25" />
+		</TRIGGER>
+		<REACTION>
+			<SPELL>Cure III</SPELL>
+		</REACTION>
+	</GAMBIT>
+</PLAYER>
+</ROOT>

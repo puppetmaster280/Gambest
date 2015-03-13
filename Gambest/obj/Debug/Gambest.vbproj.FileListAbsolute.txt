@@ -1,0 +1,19 @@
+C:\Users\Steffen\Documents\Visual Studio 2013\Projects\Gambest\Gambest\Gambest\bin\Debug\Gambest.exe.config
+C:\Users\Steffen\Documents\Visual Studio 2013\Projects\Gambest\Gambest\Gambest\bin\Debug\Gambest.exe
+C:\Users\Steffen\Documents\Visual Studio 2013\Projects\Gambest\Gambest\Gambest\bin\Debug\Gambest.pdb
+C:\Users\Steffen\Documents\Visual Studio 2013\Projects\Gambest\Gambest\Gambest\bin\Debug\Gambest.xml
+C:\Users\Steffen\Documents\Visual Studio 2013\Projects\Gambest\Gambest\Gambest\obj\Debug\Gambest.Resources.resources
+C:\Users\Steffen\Documents\Visual Studio 2013\Projects\Gambest\Gambest\Gambest\obj\Debug\Gambest.vbproj.GenerateResource.Cache
+C:\Users\Steffen\Documents\Visual Studio 2013\Projects\Gambest\Gambest\Gambest\obj\Debug\Gambest.exe
+C:\Users\Steffen\Documents\Visual Studio 2013\Projects\Gambest\Gambest\Gambest\obj\Debug\Gambest.xml
+C:\Users\Steffen\Documents\Visual Studio 2013\Projects\Gambest\Gambest\Gambest\obj\Debug\Gambest.pdb
+C:\Users\Steffen\Desktop\Gambest\Gambest\bin\Debug\Gambest.exe.config
+C:\Users\Steffen\Desktop\Gambest\Gambest\obj\Debug\Gambest.exe
+C:\Users\Steffen\Desktop\Gambest\Gambest\obj\Debug\Gambest.xml
+C:\Users\Steffen\Desktop\Gambest\Gambest\obj\Debug\Gambest.pdb
+C:\Users\Steffen\Desktop\Gambest\Gambest\bin\Debug\Gambest.exe
+C:\Users\Steffen\Desktop\Gambest\Gambest\bin\Debug\Gambest.pdb
+C:\Users\Steffen\Desktop\Gambest\Gambest\bin\Debug\Gambest.xml
+C:\Users\Steffen\Desktop\Gambest\Gambest\obj\Debug\Gambest.vbprojResolveAssemblyReference.cache
+C:\Users\Steffen\Desktop\Gambest\Gambest\obj\Debug\Gambest.Resources.resources
+C:\Users\Steffen\Desktop\Gambest\Gambest\obj\Debug\Gambest.vbproj.GenerateResource.Cache

@@ -1,0 +1,10 @@
+C:\Users\Steffen\Desktop\Gambest\Gambest\bin\Release\Gambest.exe.config
+C:\Users\Steffen\Desktop\Gambest\Gambest\bin\Release\Gambest.exe
+C:\Users\Steffen\Desktop\Gambest\Gambest\bin\Release\Gambest.pdb
+C:\Users\Steffen\Desktop\Gambest\Gambest\bin\Release\Gambest.xml
+C:\Users\Steffen\Desktop\Gambest\Gambest\obj\Release\Gambest.Resources.resources
+C:\Users\Steffen\Desktop\Gambest\Gambest\obj\Release\Gambest.vbproj.GenerateResource.Cache
+C:\Users\Steffen\Desktop\Gambest\Gambest\obj\Release\Gambest.exe
+C:\Users\Steffen\Desktop\Gambest\Gambest\obj\Release\Gambest.xml
+C:\Users\Steffen\Desktop\Gambest\Gambest\obj\Release\Gambest.pdb
+C:\Users\Steffen\Desktop\Gambest\Gambest\obj\Release\Gambest.vbprojResolveAssemblyReference.cache
