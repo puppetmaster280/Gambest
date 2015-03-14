@@ -2,51 +2,118 @@
 <ROOT>
 <SETTINGS>
 	<DELAY>200</DELAY>
-	<PARTYCOUNT>6</PARTYCOUNT>
+	<PARTYCOUNT>1</PARTYCOUNT>
 </SETTINGS>
 
-<PLAYER name="YOURNAMEHERE" leader="1">
+<PLAYER name="YOURNAME" leader="1">
 	<GAMBIT>
 		<TRIGGER gate="AND">
-			<PARTY type="HPP" gate="less" arg="50" />
-			<SELF type="MPP" gate="greater" arg="25" />
+			<SELF type="HPP" gate="less" arg="75" />
 		</TRIGGER>
-		<REACTION type="TARGET">
-			<SPELL>Cure II</SPELL>
-		</REACTION>
+		<REACTION type="ABILITY" arg="Curing Waltz II" />
+	</GAMBIT>
+
+	<GAMBIT>
+		<TRIGGER gate="NOT AND">
+			<TARGET type="NAME" gate="equals" arg="a" />
+		</TRIGGER>
+		<REACTION type="FIND" arg="a" />
 	</GAMBIT>
 
 	<GAMBIT>
 		<TRIGGER gate="AND">
-			<PARTY type="HPP" gate="less" arg="25" />
-			<ME type="MPP" gate="greater" arg="25" />
+			<TARGET type="DISTANCE" gate="greater" arg="3" />
+			<TARGET type="NAME" gate="equals" arg="a" />
 		</TRIGGER>
-		<REACTION>
-			<SPELL>Cure III</SPELL>
-		</REACTION>
+		<REACTION type="TRACK" arg="3"/>
 	</GAMBIT>
+	
+	<GAMBIT>
+		<TRIGGER gate="AND">
+			<TARGET type="DISTANCE" gate="less" arg="3" />
+			<TARGET type="NAME" gate="equals" arg="a" />
+			<SELF type="STATUS" gate="equals" arg="Standing" />
+		</TRIGGER>
+		<REACTION type="ATTACK" arg=""/>
+	</GAMBIT>
+	
+	<GAMBIT>
+		<TRIGGER gate="AND">
+			<TARGET type="DISTANCE" gate="less" arg="3" />
+			<SELF type="STATUS" gate="equals" arg="Fighting" />
+			<TARGET type="NAME" gate="equals" arg="a" />
+		</TRIGGER>
+		<REACTION type="ABILITY" arg="Box Step"/>
+	</GAMBIT>
+	
 </PLAYER>
 
-
-<PLAYER name="ANOTHERNAMEHERE" leader="0">
+<PLAYER name="EXAMPLE" leader="0">
 	<GAMBIT>
 		<TRIGGER gate="AND">
-			<PARTY type="HPP" gate="less" arg="50" />
-			<ME type="MPP" gate="greater" arg="25" />
+			<SELF type="HP" gate="less" arg="75" />
+			<SELF type="TP" gate="greater" arg="50" />	
 		</TRIGGER>
-		<REACTION>
-			<SPELL>Cure II</SPELL>
-		</REACTION>
+		<REACTION type="ABILITY" arg="Curing Waltz II" />
 	</GAMBIT>
 
 	<GAMBIT>
-		<TRIGGER gate="AND">
-			<PARTY type="HPP" gate="less" arg="25" />
-			<ME type="MPP" gate="greater" arg="25" />
+		<TRIGGER gate="NOT AND">
+			<PARTY type="HPP" gate="greater" arg="15" /> 
 		</TRIGGER>
-		<REACTION>
-			<SPELL>Cure III</SPELL>
-		</REACTION>
+		<REACTION type="SPELL" arg="Cure IV" />
 	</GAMBIT>
+
+	<GAMBIT>
+		<TRIGGER gate="AND NOT">
+			<SELF type="MP" gate="greater" arg="500" />
+			<SELF type="EFFECT" gate="EQUALS" arg="Refresh" />
+		</TRIGGER>
+		<REACTION type="SPELL" arg="Protect V"/>
+	</GAMBIT>
+	
+	<GAMBIT>
+		<TRIGGER gate="OR">
+			<TARGET type="DISTANCE" gate="less" arg="3" />
+			<TARGET type="NAME" gate="equals" arg="crab" />
+		</TRIGGER>
+		<REACTION type="ATTACK" arg=""/>
+	</GAMBIT>
+	
+	<GAMBIT>
+		<TRIGGER gate="NOT OR">
+			<TARGET type="Assist" gate="equals" arg="YOURNAME" />
+		</TRIGGER>
+		<REACTION type="INPUT" arg="/p Our target has changed!"/>
+	</GAMBIT>
+	
+	<GAMBIT>
+		<TRIGGER gate="NOT OR">
+			<SELF type="HP" gate="less" arg="100" />
+		</TRIGGER>
+		<REACTION type="WEAPONSKILL" arg="Rudra's Storm"/>
+	</GAMBIT>
+	
+	<GAMBIT>
+		<TRIGGER gate="NOT OR">
+			<SELF type="HP" gate="less" arg="100" />
+		</TRIGGER>
+		<REACTION type="WEAPONSKILL" arg="Rudra's Storm"/>
+	</GAMBIT>
+	
+	<GAMBIT>
+		<TRIGGER gate="NOT OR">
+			<SELF type="HP" gate="less" arg="100" />
+		</TRIGGER>
+		<REACTION type="TRACK" arg="5"/>
+	</GAMBIT>
+	
+	<GAMBIT>
+		<TRIGGER gate="NOT OR">
+			<SELF type="HP" gate="less" arg="100" />
+		</TRIGGER>
+		<REACTION type="FIND" arg="Crab"/>
+	</GAMBIT>
+	
 </PLAYER>
 </ROOT>

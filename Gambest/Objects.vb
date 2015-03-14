@@ -23,6 +23,7 @@ Module Objects
         STATUS
         DISTANCE
         EFFECT
+        ASSIST
     End Enum
 
     Public Enum Reactions
@@ -35,6 +36,8 @@ Module Objects
         KEYPRESS
         KEYDOWN
         KEYUP
+        TRACK
+        FIND
     End Enum
 
     Public Class Trigger
@@ -83,6 +86,8 @@ Module Objects
                     Type = Triggers.TP
                 Case "status"
                     Type = Triggers.STATUS
+                Case "assist"
+                    Type = Triggers.ASSIST
             End Select
         End Sub
     End Class
@@ -100,7 +105,7 @@ Module Objects
                     Type = Reactions.ATTACK
                 Case "input"
                     Type = Reactions.INPUT
-                Case "job ability"
+                Case "ability"
                     Type = Reactions.JOB_ABILITY
                 Case "spell"
                     Type = Reactions.SPELL
@@ -114,6 +119,10 @@ Module Objects
                     Type = Reactions.KEYPRESS
                 Case "keyup"
                     Type = Reactions.KEYUP
+                Case "track"
+                    Type = Reactions.TRACK
+                Case "find"
+                    Type = Reactions.FIND
             End Select
         End Sub
     End Class

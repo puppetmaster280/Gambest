@@ -1,0 +1,17 @@
+Standing
+Fighting
+Dead1
+Dead2
+Event
+Chocobo
+Healing
+Synthing
+Sitting
+Fishing
+FishBite
+Obtained
+RodBreak
+LineBreak
+CatchMonster
+LostCatch
+Unknown

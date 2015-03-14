@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<PLAYER name="DERP" leader="1">
+
+
+	##	EXAMPLE 1  ##
+	<GAMBIT>
+		<TRIGGER gate="AND">
+			<SELF type="HPP" gate="less" arg="75" />
+			<SELF type="TP" gate="greater" arg="350" />
+		</TRIGGER>
+		<REACTION type="ABILITY" arg="Curing Waltz II" />
+	</GAMBIT>
+	
+	##	EXAMPLE 2  ##
+	<GAMBIT>
+		<TRIGGER gate="AND">
+			<Target type="NAME" gate="equals" arg="crab" /> (crabs are fun to kill)
+			<SELF type="TP" gate="greater" arg="100" />
+		</TRIGGER>
+		<REACTION type="ABILITY" arg="Box Step" /> (this wont work)
+	</GAMBIT>
+	
+	##	EXAMPLE 3  ##
+	<GAMBIT>
+		<TRIGGER gate="AND">
+			<SELF type="TP" gate="greater" arg="100" />
+			<Target type="NAME" gate="equals" arg="crab" /> (Notice how we flipped the order)
+		</TRIGGER>
+		<REACTION type="ABILITY" arg="Box Step" /> (this will work)
+	</GAMBIT>
+	
+	##	EXAMPLE 4  ##
+	<GAMBIT>
+		<TRIGGER gate="AND">
+			<PARTY type="HPP" gate="less" arg="50" />
+		</TRIGGER>
+		<REACTION type="ABILITY" arg="Curing Waltz III" /> (this will heal the party member from the trigger above)
+	</GAMBIT>
+	
+</PLAYER>
+
+
+<PLAYER name="DERP" leader="0">
+</PLAYER>
+	

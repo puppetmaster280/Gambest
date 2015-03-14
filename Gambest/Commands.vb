@@ -17,7 +17,7 @@ Module Commands
         If Kill Then End
     End Sub
 
-    Public Function Parse(ByVal filepath As String, ByRef delay As Integer) As List(Of character)
+    Public Function Parse(ByVal filepath As String, ByRef delay As Integer, ByRef partycount As Integer) As List(Of character)
 
         Dim outlist As New List(Of character)
 
@@ -27,6 +27,7 @@ Module Commands
 
         Dim SettingNode As XmlNode = reader.SelectSingleNode("/ROOT/SETTINGS")
         delay = SettingNode.SelectSingleNode("./DELAY").FirstChild.Value
+        partycount = SettingNode.SelectSingleNode("./PARTYCOUNT").FirstChild.Value
 
         For Each player As XmlNode In reader.SelectNodes("/ROOT/PLAYER")
             Dim name = player.Attributes("name").Value.Trim
@@ -41,17 +42,17 @@ Module Commands
 
                 For Each Node As XmlNode In triggerNode.ChildNodes
                     Dim target As String = Node.Name.Trim
-                    Dim ttype As String = Node.Attributes("type").Value.Trim
-                    Dim gate As String = Node.Attributes("gate").Value.Trim
-                    Dim targ As String = Node.Attributes("arg").Value.Trim
+                    Dim ttype As String = Node.Attributes("type").Value
+                    Dim gate As String = Node.Attributes("gate").Value
+                    Dim targ As String = Node.Attributes("arg").Value
                     Dim trigger As New Trigger(target, gate, ttype, targ)
 
                     Gambit.triggers.Add(trigger)
                 Next
 
-                Dim ReactionNode As XmlNode = GambitNode.SelectSingleNode("./REACTION").FirstChild
-                Dim type As String = ReactionNode.Name.Trim
-                Dim arg As String = ReactionNode.FirstChild.Value.Trim
+                Dim ReactionNode As XmlNode = GambitNode.SelectSingleNode("./REACTION")
+                Dim type As String = ReactionNode.Attributes("type").Value
+                Dim arg As String = ReactionNode.Attributes("arg").Value
                 Gambit.reaction = New Reaction(type, arg)
 
                 character.gambits.Add(Gambit)
@@ -61,58 +62,65 @@ Module Commands
 
         Return outlist
     End Function
+    Public Class monitorObject
+        Public player As character
+        Public delay As Integer
+        Public partycount As Integer
 
-    Public Sub Monitor(ByVal player As character, ByVal delay As Integer, ByVal partycount As Integer)
-        While True
-            Threading.Thread.Sleep(delay)
+        Public Sub Monitor()
+            If player.Leader Then player.INSTANCE.Windower.SendString("/echo Commencing Gambit, assigning " + player.Name + " as the leader.")
+            player.INSTANCE.Windower.SendString("/lockstyle on")
+            While True
+                Threading.Thread.Sleep(delay)
 
-            'for each gambit
-            For Each Gambit As Gambit In player.gambits
-                Dim check As Boolean = True
-                Dim target As String = "<me>"
+                If player.INSTANCE.Player.Status = Status.Fighting Then
+                    player.INSTANCE.Windower.SendString("/lockon on")
+                    player.INSTANCE.Windower.SendKeyPress(KeyCode.LetterS)
+                    player.INSTANCE.Windower.SendKeyPress(KeyCode.LetterW)
+                End If
 
-                If Gambit.triggerGate = "AND" Then
-                    For Each Trigger As Trigger In Gambit.triggers
-                        target = Trigger.Target
-                        If Not checkTrigger(Trigger, player.INSTANCE, target, partycount) Then
-                            check = False
+                'for each gambit
+                For Each Gambit As Gambit In player.gambits
+                    Dim check As Boolean = True
+                    Dim target As String = "<me>"
+
+                    If Gambit.triggerGate = "AND" Then
+                        For Each Trigger As Trigger In Gambit.triggers
+                            target = Trigger.Target
+                            If Not checkTrigger(Trigger, player.INSTANCE, target, partycount) Then
+                                check = False
+                                Exit For
+                            End If
+                        Next
+                    Else
+                        check = False
+                        For Each Trigger As Trigger In Gambit.triggers
+                            target = Trigger.Target
+                            If checkTrigger(Trigger, player.INSTANCE, target, partycount) Then
+                                check = True
+                            End If
+                        Next
+                    End If
+
+                    If Gambit.NotGate Then check = Not check
+
+                    If check Then
+                        If React(Gambit.reaction, player.INSTANCE, target) Then
+                            Threading.Thread.Sleep(delay) 'prevents sending command multiple times
                             Exit For
                         End If
-                    Next
-                Else
-                    check = False
-                    For Each Trigger As Trigger In Gambit.triggers
-                        target = Trigger.Target
-                        If checkTrigger(Trigger, player.INSTANCE, target, partycount) Then
-                            check = True
-                        End If
-                    Next
-                End If
-
-                If Gambit.NotGate Then check = Not check
-
-                If check Then
-                    If React(Gambit.reaction, player.INSTANCE, target) Then
-                        Exit For
                     End If
-                End If
-            Next
+                Next
 
-
-            'get gate
-
-            'check each trigger and compile gate
-
-            'attempt reaction
-
-        End While
-    End Sub
+            End While
+        End Sub
+    End Class
 
     Public Function checkTrigger(ByVal trigger As Trigger, ByVal INSTANCE As FFACE, ByRef target As String, ByVal partycount As Integer) As Boolean
         Dim VAL As Object = ""
         Select Case trigger.Target
             Case Targets.party
-                For i = 1 To partycount - 1
+                For i = 0 To partycount - 1
                     Select Case trigger.Type
                         Case Triggers.HP
                             VAL = INSTANCE.PartyMember(i).HPCurrent
@@ -124,22 +132,22 @@ Module Commands
                             VAL = INSTANCE.PartyMember(i).MPPCurrent
                     End Select
                     Select Case trigger.Gate
-                            Case Gates.Equals
-                                If VAL = trigger.Arg Then
-                                    target = INSTANCE.PartyMember(i).Name
-                                    Return True
-                                End If
-                            Case Gates.GreaterThan
-                                If VAL > trigger.Arg Then
-                                    target = INSTANCE.PartyMember(i).Name
-                                    Return True
-                                End If
-                            Case Gates.LessThan
-                                If VAL < trigger.Arg Then
-                                    target = INSTANCE.PartyMember(i).Name
-                                    Return True
-                                End If
-                        End Select
+                        Case Gates.Equals
+                            If VAL = trigger.Arg Then
+                                target = INSTANCE.PartyMember(i).Name
+                                Return True
+                            End If
+                        Case Gates.GreaterThan
+                            If VAL > trigger.Arg Then
+                                target = INSTANCE.PartyMember(i).Name
+                                Return True
+                            End If
+                        Case Gates.LessThan
+                            If VAL < trigger.Arg Then
+                                target = INSTANCE.PartyMember(i).Name
+                                Return True
+                            End If
+                    End Select
                 Next
                 Return False
             Case Targets.self
@@ -155,13 +163,21 @@ Module Commands
                         VAL = INSTANCE.Player.MPPCurrent
                 End Select
             Case Targets.target
-        target = "<t>"
-        Select Case trigger.Type
-            Case Triggers.HPP
-                VAL = INSTANCE.NPC.HPPCurrent(INSTANCE.Target.ID)
+                target = "<t>"
+                Select Case trigger.Type
+                    Case Triggers.HPP
+                        VAL = INSTANCE.NPC.HPPCurrent(INSTANCE.Target.ID)
+                End Select
         End Select
-        End Select
         Select Case trigger.Type
+            Case Triggers.ASSIST
+                target = "<t>"
+                Dim name1 As String = INSTANCE.Target.Name
+                INSTANCE.Windower.SendString("/assist " + trigger.Arg)
+                Threading.Thread.Sleep(1000)
+                If Not name1 = INSTANCE.Target.Name Then
+                    Return True
+                End If
             Case Triggers.DISTANCE
                 target = "<t>"
                 VAL = INSTANCE.NPC.Distance(INSTANCE.Target.ID)
@@ -170,7 +186,13 @@ Module Commands
                 VAL = INSTANCE.Player.TPCurrent
             Case Triggers.NAME
                 target = "<t>"
-                VAL = INSTANCE.Target.Name
+                Dim tName As String = INSTANCE.Target.Name.ToLower
+                If tName.Contains(trigger.Arg.ToLower) Then
+                    Return True
+                Else
+                    Return False
+                End If
+
             Case Triggers.STATUS
                 target = "<me>"
                 If INSTANCE.Player.Status = [Enum].Parse(GetType(Status), trigger.Arg) Then Return True
@@ -196,10 +218,12 @@ Module Commands
         Select Case reaction.Type
             Case Reactions.ATTACK
                 INSTANCE.Windower.SendString("/attack")
+                Threading.Thread.Sleep(1000)
             Case Reactions.INPUT
                 INSTANCE.Windower.SendString(reaction.Arg)
             Case Reactions.JOB_ABILITY
-                Dim ID As Byte = [Enum].Parse(GetType(AbilityList), reaction.Arg)
+                Dim fixedstring As String = convertAbility(reaction.Arg)
+                Dim ID As AbilityList = [Enum].Parse(GetType(AbilityList), fixedstring)
                 'If Not INSTANCE.Player.HasAbility(ID) Then
                 'INSTANCE.Windower.SendString("/echo You do not have ability:" + reaction.Arg)
                 'End
@@ -208,11 +232,11 @@ Module Commands
                     Return False
                 End If
 
-                Dim fixedstring As String = convertAbility(reaction.Arg)
-                INSTANCE.Windower.SendString("/ja """ + fixedstring + """ " + target)
+                INSTANCE.Windower.SendString("/ja """ + reaction.Arg + """ " + target)
 
             Case Reactions.SPELL
-                Dim ID As Byte = [Enum].Parse(GetType(SpellList), reaction.Arg)
+                Dim fixedstring As String = convertSpell(reaction.Arg)
+                Dim ID As SpellList = [Enum].Parse(GetType(SpellList), fixedstring)
                 'If Not INSTANCE.Player.KnowsSpell(ID) Then
                 'INSTANCE.Windower.SendString("/echo You do not know the spell:" + reaction.Arg)
                 'End
@@ -221,8 +245,7 @@ Module Commands
                     Return False
                 End If
 
-                Dim fixedstring As String = convertSpell(reaction.Arg)
-                INSTANCE.Windower.SendString("/ma """ + fixedstring + """ " + target)
+                INSTANCE.Windower.SendString("/ma """ + reaction.Arg + """ " + target)
             Case Reactions.WEAPONSKILL
                 If Not INSTANCE.Player.TPCurrent > 1000 Then
                     Return False
@@ -239,6 +262,37 @@ Module Commands
                 INSTANCE.Windower.SendKeyPress(ID)
             Case Reactions.MACRO
                 INSTANCE.Windower.SendString("/echo Macros are not enabled yet, y u do dis?")
+            Case Reactions.TRACK
+                INSTANCE.Windower.SendString("/lockon on")
+                While INSTANCE.NPC.Distance(INSTANCE.Target.ID) > reaction.Arg
+                    If INSTANCE.Player.ViewMode = ViewMode.ThirdPerson Then
+                        INSTANCE.Windower.SendKeyPress(KeyCode.LetterV)
+                    End If
+                    INSTANCE.Windower.SendKey(KeyCode.LetterW, True)
+                End While
+                INSTANCE.Windower.SendKey(KeyCode.LetterW, False)
+                INSTANCE.Windower.SendString("/lockon off")
+            Case Reactions.FIND
+                For i = 0 To 20
+                    For n = 0 To 8
+                        If INSTANCE.Player.ViewMode = ViewMode.ThirdPerson Then
+                            INSTANCE.Windower.SendKeyPress(KeyCode.LetterV)
+                        End If
+                        INSTANCE.Windower.SendKeyPress(KeyCode.BackspaceKey)
+                        Threading.Thread.Sleep(100)
+                        INSTANCE.Windower.SendKeyPress(KeyCode.TabKey)
+                        Threading.Thread.Sleep(200)
+                        If INSTANCE.Target.Name.ToLower.Contains(reaction.Arg.ToLower) Then
+                            Return True
+                        End If
+                    Next
+                    For n = 0 To 8
+                        INSTANCE.Windower.SendKeyPress(KeyCode.LetterD)
+                        Threading.Thread.Sleep(50)
+                    Next
+                Next
+                Threading.Thread.Sleep(500)
+                Return False
         End Select
 
         Return True
@@ -246,35 +300,38 @@ Module Commands
 
     Function convertAbility(ByVal raw As String) As String
         Dim out As String = raw.Replace("_", " ")
-        out.Replace("Avatars", "Avatar's")
-        out.Replace("Assasins", "Assasin's")
+        out = out.Replace("'", "")
+        out = out.Replace(" ", "_")
+        If out.Contains("Curing_Waltz_") Then
+            out = "Curing_Waltz"
+        ElseIf out.ToLower.Contains("step") Then
+            Return "Steps"
+        ElseIf out.Contains("Divine_Waltz_") Then
+            Return "Divine_Waltz"
+        ElseIf out.Contains("Samba") Then
+            Return "Sambas"
+        ElseIf out.Contains("Jig") Then
+            Return "Jigs"
+        ElseIf out = "Animated_Flourish" Or out = "Desperate_Flourish" Or out = "Violent_Flourish" Then
+            Return "Flourishes_I"
+        ElseIf out = "Reverse Flourish" Or out = "Wild_Flourish" Or out = "Building_Flourish" Then
+            Return "Flourishes_II"
+        ElseIf out = "Climactic_Flourish" Or out = "Striking_Flourish" Or out = "Ternary_Flourish" Then
+            Return "Flourishes_III"
+        End If
         Return out
     End Function
 
     Function convertSpell(ByVal raw As String) As String
         Dim out As String = raw
 
-        out.Replace("_Ichi", " :Ichi")
-        out.Replace("_Ni", " :Ni")
-        out.Replace("_San", " :San")
+        out = out.Replace(":", "")
+        out = out.Replace("-", "")
 
-        out.Replace("Teleport_", "Teleport: ")
-        out.Replace("Recall_", "Recall-")
+        out = out.Replace("'", "")
+        out = out.Replace("Winds of ", "Winds_")
 
-        out.Replace("Adventurers", "Adventurer's")
-        out.Replace("Archers", "Archer's")
-        out.Replace("Armys", "Army's")
-        out.Replace("Everyones", "Everyone's")
-        out.Replace("Goddesss", "Goddess's")
-        out.Replace("Hunters", "Hunter's")
-        out.Replace("s_Operetta", "'s Operetta")
-        out.Replace("Knights", "Knight's")
-        out.Replace("Mages", "Mage's")
-        out.Replace("Maidens", "Maiden's")
-        out.Replace("Sentinels", "Sentinel's")
-        out.Replace("Winds_", "Winds of ")
-
-        out.Replace("_", " ")
+        out = out.Replace(" ", "_")
 
         Return out
     End Function
