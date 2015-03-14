@@ -5,7 +5,11 @@
 	<PARTYCOUNT>1</PARTYCOUNT>
 </SETTINGS>
 
+<<<<<<< HEAD
 <PLAYER name="YOURNAME" leader="1">
+=======
+<PLAYER name="Derp" leader="1">
+>>>>>>> origin/master
 	<GAMBIT>
 		<TRIGGER gate="AND">
 			<SELF type="HPP" gate="less" arg="75" />
