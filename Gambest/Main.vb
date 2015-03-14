@@ -31,7 +31,7 @@ Module Main
             For Each ffxi As Process In processes
                 If ffxi.MainWindowTitle = character.Name Then
                     Dim instance As New FFACE(ffxi.Id)
-                    character.INSTANCE = New FFACE(ffxi.Id)
+                    character.INSTANCE = instance
                 End If
             Next
         Next
