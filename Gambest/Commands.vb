@@ -74,9 +74,7 @@ Module Commands
                 Threading.Thread.Sleep(delay)
 
                 If player.INSTANCE.Player.Status = Status.Fighting Then
-                    player.INSTANCE.Windower.SendString("/lockon on")
-                    player.INSTANCE.Windower.SendKeyPress(KeyCode.LetterS)
-                    player.INSTANCE.Windower.SendKeyPress(KeyCode.LetterW)
+                    player.INSTANCE.Navigator.FaceHeading(player.INSTANCE.Target.ID)
                 End If
 
                 'for each gambit
