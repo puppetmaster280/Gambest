@@ -70,6 +70,7 @@ Module Commands
         Public Sub Monitor()
             If player.Leader Then player.INSTANCE.Windower.SendString("/echo Commencing Gambit, assigning " + player.Name + " as the leader.")
             player.INSTANCE.Windower.SendString("/lockstyle on")
+            player.INSTANCE.Navigator.HeadingTolerance = 10 'Setting the threshhold in degrees.
             While True
                 Threading.Thread.Sleep(delay)
 
@@ -145,6 +146,11 @@ Module Commands
                                 target = INSTANCE.PartyMember(i).Name
                                 Return True
                             End If
+                        Case Gates.NotEquals
+                            If VAL <> trigger.Arg Then
+                                target = INSTANCE.PartyMember(i).Name
+                                Return True
+                            End If
                     End Select
                 Next
                 Return False
@@ -196,9 +202,19 @@ Module Commands
                 If INSTANCE.Player.Status = [Enum].Parse(GetType(Status), trigger.Arg) Then Return True
             Case Triggers.EFFECT
                 target = "<me>"
-                For Each Stat As StatusEffect In INSTANCE.Player.StatusEffects()
-                    If Stat = [Enum].Parse(GetType(StatusEffect), trigger.Arg) Then Return True
-                Next
+                If Gates.NotEquals Then
+                    Dim check As Boolean = False
+                    For Each Stat As StatusEffect In INSTANCE.Player.StatusEffects()
+                        If Stat = [Enum].Parse(GetType(StatusEffect), trigger.Arg) Then Return False
+                    Next
+                    Return True
+                Else
+                    For Each Stat As StatusEffect In INSTANCE.Player.StatusEffects()
+                        If Stat = [Enum].Parse(GetType(StatusEffect), trigger.Arg) Then Return True
+                    Next
+                End If
+
+                
         End Select
 
         Select Case trigger.Gate

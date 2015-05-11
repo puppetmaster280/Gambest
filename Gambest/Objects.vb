@@ -5,6 +5,7 @@ Module Objects
         LessThan
         GreaterThan
         Equals
+        NotEquals
     End Enum
 
     Public Enum Targets
@@ -56,6 +57,8 @@ Module Objects
                     Gate = Gates.GreaterThan
                 Case "equals"
                     Gate = Gates.Equals
+                Case "notequals"
+                    Gate = Gates.NotEquals
             End Select
 
             Select Case _Target.ToLower
