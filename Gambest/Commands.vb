@@ -203,7 +203,6 @@ Module Commands
             Case Triggers.EFFECT
                 target = "<me>"
                 If Gates.NotEquals Then
-                    Dim check As Boolean = False
                     For Each Stat As StatusEffect In INSTANCE.Player.StatusEffects()
                         If Stat = [Enum].Parse(GetType(StatusEffect), trigger.Arg) Then Return False
                     Next
