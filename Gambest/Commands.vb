@@ -211,6 +211,7 @@ Module Commands
                     For Each Stat As StatusEffect In INSTANCE.Player.StatusEffects()
                         If Stat = [Enum].Parse(GetType(StatusEffect), trigger.Arg) Then Return True
                     Next
+                    Return False
                 End If
 
                 
