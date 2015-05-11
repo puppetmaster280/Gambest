@@ -224,6 +224,8 @@ Module Commands
                 If VAL > trigger.Arg Then Return True
             Case Gates.LessThan
                 If VAL < trigger.Arg Then Return True
+            Case Gates.NotEquals
+                If VAL <> trigger.Arg Then Return True
         End Select
         Return False
     End Function
