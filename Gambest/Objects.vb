@@ -5,6 +5,7 @@ Module Objects
         LessThan
         GreaterThan
         Equals
+        NotEquals
     End Enum
 
     Public Enum Targets
@@ -49,13 +50,15 @@ Module Objects
         Public Sub New(ByVal _Target As String, ByVal _Gate As String, ByVal _Type As String, ByVal _arg As String)
             Arg = _arg
 
-            Select Case _Gate
+            Select Case _Gate.ToLower
                 Case "less"
                     Gate = Gates.LessThan
                 Case "greater"
                     Gate = Gates.GreaterThan
                 Case "equals"
                     Gate = Gates.Equals
+                Case "notequals"
+                    Gate = Gates.NotEquals
             End Select
 
             Select Case _Target.ToLower
