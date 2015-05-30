@@ -72,8 +72,6 @@ Module Commands
             player.INSTANCE.Windower.SendString("/lockstyle on")
             player.INSTANCE.Navigator.HeadingTolerance = 10 'Setting the threshhold in degrees.
             While True
-                Threading.Thread.Sleep(delay)
-
                 If player.INSTANCE.Player.Status = Status.Fighting Then
                     player.INSTANCE.Navigator.FaceHeading(player.INSTANCE.Target.ID)
                 End If
@@ -110,7 +108,7 @@ Module Commands
                         End If
                     End If
                 Next
-
+                Threading.Thread.Sleep(delay)
             End While
         End Sub
     End Class
